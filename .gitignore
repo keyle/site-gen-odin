@@ -1,0 +1,32 @@
+# Compiled executable and object files
+bin/
+obj/
+*.exe
+*.dll
+*.so
+*.dylib
+*.o
+*.obj
+
+# The build
+*.dSYM
+site-gen-odin
+
+# Build output directory
+build/
+
+# Dependency directories (e.g., if using a package manager)
+deps/
+
+# Editor and IDE specific files
+.idea/
+*.swp
+*.swo
+
+# Operating system generated files
+.DS_Store
+Thumbs.db
+
+# Odin specific files
+*.ll
+*.odin-ll
