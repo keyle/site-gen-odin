@@ -5,7 +5,7 @@ import "core:fmt"
 import "core:os"
 import "core:strings"
 
-Settings :: struct {
+Settings :: struct #packed {
 	workdir:        string,
 	webroot:        string,
 	template:       string,
@@ -39,15 +39,15 @@ load_settings :: proc(settings: ^Settings) {
 	defer json.destroy_value(json_data)
 
 	root := json_data.(json.Object)
-
-    settings.workdir = root["workdir"].(json.String)
-    settings.webroot = root["webroot"].(json.String)
-    settings.template = root["template"].(json.String)
-    settings.templateindex = root["templateindex"].(json.String)
-    settings.contenttag = root["contenttag"].(json.String)
-    settings.titletag = root["titletag"].(json.String)
-    settings.descriptiontag = root["descriptiontag"].(json.String)
-    settings.keywordstag = root["keywordstag"].(json.String)
+	settings.workdir = strings.clone(root["workdir"].(json.String))
+	settings.webroot = strings.clone(root["webroot"].(json.String))
+	settings.template = strings.clone(root["template"].(json.String))
+	settings.templateindex = strings.clone(root["templateindex"].(json.String))
+	settings.contenttag = strings.clone(root["contenttag"].(json.String))
+	settings.titletag = strings.clone(root["titletag"].(json.String))
+	settings.descriptiontag = strings.clone(root["descriptiontag"].(json.String))
+	settings.keywordstag = strings.clone(root["keywordstag"].(json.String))
 
 	fmt.println("Settings loaded successfully.")
+	fmt.println(settings)
 }

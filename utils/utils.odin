@@ -1,14 +1,15 @@
 package utils
 
+import cm "../shared/commonmark"
 import "core:fmt"
 import "core:os"
 import "core:path/filepath"
 import "core:strings"
 
-walk_markdown_files :: proc(dir_path: string, markdown_files: ^[dynamic]os.File_Info) {
+walk_markdown_files :: proc(dir_path: string, markdown_files: ^[dynamic]string) {
 	fmt.println("opening folder", dir_path)
 	fd, err := os.open(dir_path)
-	bail(err, "Could not open folder", dir_path)
+	bail(err, "Could not open folder:", dir_path)
 
 	fis: []os.File_Info
 	defer os.file_info_slice_delete(fis)
@@ -21,10 +22,32 @@ walk_markdown_files :: proc(dir_path: string, markdown_files: ^[dynamic]os.File_
 			walk_markdown_files(f.fullpath, markdown_files)
 		}
 		if strings.has_suffix(f.fullpath, ".md") {
-			append(markdown_files, f)
+			append(markdown_files, strings.clone(f.fullpath))
 			fmt.println(f)
 		}
 	}
+}
+
+read_file :: proc(path: string) -> string {
+	raw, ok := os.read_entire_file_from_filename(path)
+	if !ok {
+		fmt.eprintln("Could not load file:", path)
+		os.exit(1)
+	}
+	return string(raw)
+}
+
+markdown_to_html :: proc(markdown: string) -> string {
+	str := markdown
+	smart_opt := cm.DEFAULT_OPTIONS | cm.Options{.Source_Position}
+	root := cm.parse_document(raw_data(str), len(str), smart_opt)
+	defer cm.node_free(root)
+
+	html := cm.render_html(root, cm.DEFAULT_OPTIONS)
+	defer cm.free(html)
+
+	fmt.println(html)
+	return string(html)
 }
 
 // there is a walk function under filepath.walk but it won't work for me
