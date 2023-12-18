@@ -59,3 +59,13 @@ Also see the `makefile` and the `.vscode/launch.json`
 NOTE: I've added the `.vscode` folder on purpose this time as it's quite hard for first timers to work out how to get debugging going in VSCode properly. Hopefully this helps.
 
 This is a WIP and isn't feature complete...
+
+### Status
+
+Postponed Indefinitely.
+
+There are a few issues with this implementation. I managed the convert the markdown content to HTML but using commonmark, which excludes all table contents and does silly things such as removing existing html code in the markdown (although legal). I need a Github flavoured markdown conversion library of sorts.
+
+I like Odin. Debugging works nicely and the compiler makes sense. I'm toroughly excited for its future.
+
+I will revisit when some of the cruft has been cleared, and maybe when they'll have a package management system of any kind and a decent markdown implementation. If I get bored, I might write a github flavoured (GLFM) parser/converter. It could be a fun nightmare.
